@@ -27,6 +27,7 @@ export default {
 
   initWithApi(api) {
     api.modifyClass("component:topic-list", {
+      pluginId: "topic-thumbnails",
       topicThumbnailsService: service("topic-thumbnails"),
       classNameBindings: [
         "isMinimalGrid:topic-thumbnails-minimal",
@@ -41,10 +42,12 @@ export default {
     });
 
     api.modifyClass("component:topic-list-item", {
+      pluginId: "topic-thumbnails",
       topicThumbnailsService: service("topic-thumbnails"),
 
       // Hack to disable the mobile topic-list-item template
       // Our grid styling is responsive, and uses the desktop HTML structure
+      @observes("topic.pinned")
       renderTopicListItem() {
         const wasMobileView = getResolverOption("mobileView");
         if (
@@ -69,6 +72,7 @@ export default {
     //////////////////////////
     if (!CSS.supports("grid-template-rows", "masonry")) {
       api.modifyClass("component:topic-list", {
+        pluginId: "topic-thumbnails-masonry",
         topicThumbnailsService: service("topic-thumbnails"),
 
         masonryTargetColumnWidth: 300,
@@ -190,6 +194,7 @@ export default {
       });
 
       api.modifyClass("component:topic-list-item", {
+        pluginId: "topic-thumbnails-masonry",
         attributeBindings: ["masonryStyle:style"],
 
         @discourseComputed("topic.masonryData")
